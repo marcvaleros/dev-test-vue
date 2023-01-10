@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-xl>
+  <v-container>
     <h1 class="title">Project</h1>
     <v-stepper v-model="e1">
       <v-stepper-header>
@@ -20,12 +20,12 @@
         </v-stepper-step>
       </v-stepper-header>
 
-      <v-stepper-items>
-        <v-stepper-content  step="1">
+      <v-stepper-items class="mt-2">
+        <v-stepper-content step="1" >
           <v-card
-            class="mb-12"
-            color="grey lighten-1"
+            class="mb-12 elevation-0"
             height="200px"
+            
           ></v-card>
 
           <v-btn
@@ -42,8 +42,7 @@
 
         <v-stepper-content step="2">
           <v-card
-            class="mb-12"
-            color="grey lighten-1"
+            class="mb-12 elevation-0"
             height="200px"
           ></v-card>
           <v-btn text class="blue--text" @click="e1 = 1">
@@ -51,17 +50,16 @@
           </v-btn>
         </v-stepper-content>
       </v-stepper-items>
+
     </v-stepper>
   </v-container>
 </template>
 
 <script>
-  import HelloWorld from '../components/HelloWorld'
   /* eslint-disable */
   export default {
     name: 'Home',
     components: {
-      HelloWorld,
     },
     data() {
       return {
@@ -70,3 +68,16 @@
     },
   }
 </script>
+
+<style>
+
+.title{
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.v-stepper__content {
+  box-shadow: none;
+} 
+
+</style>
