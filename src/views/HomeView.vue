@@ -85,9 +85,9 @@
                           dense
                           hide-details
                           :items="items"
-                          :key="items.name"
-                          label="Select job owner"
                           outlined
+                          color="grey darken-1"
+                          label="Select job owner"
                         ></v-select>
 
 
@@ -142,16 +142,24 @@
     data() {
       return {
         e1:1,
-        items: 
+        items: [
           {
-            name: 'Alice0',
-            name: 'Alice1',
-            name: 'Alice2',
-            name: 'Alice3',
-            name: 'Alice4',
-            
-          }
-        ,
+            text: 'Alice0',
+          },
+          {
+            text: 'Alice1',
+          },
+          {
+            text: 'Alice2',
+          },
+          {
+            text: 'Alice3',
+          },
+          {
+            text: 'Alice4',
+          },
+         
+        ],
         jobs: [
           {
             name: 'Eclair',
