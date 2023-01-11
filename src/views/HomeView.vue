@@ -126,12 +126,12 @@
                   </thead>
 
                   <tbody>
-                    <tr v-for="item in owners"
-                      :key="item"
+                    <tr v-for="item in getTotal"
+                      :key="item.name"
                     >
-                      <td>{{ item }}</td>
-                      <td>{{ item.owner }}</td>
-                    </tr>
+                    <td>{{ item.totalAmount }}</td>
+                    <td>{{ item.name }}</td>
+                  </tr>
 
                   </tbody>
                 </template>
@@ -156,12 +156,6 @@
     data() {
       return {
         e1:1,
-        summary:[
-          {
-            owner:'',
-            total:0
-          }
-        ],
         owners: [],
         jobs: [{
           id: 1,
@@ -187,16 +181,23 @@
       }
     },
     computed:{
-        getTotal(user) {
-          return this.jobs.map
-      }
+       getTotal() {
+          const result = [];
+          let x = 0;
+          this.owners.forEach(name => {
+            const filteredObjs = this.jobs.filter(job => job.owner === name);
+            const totalAmount = filteredObjs.reduce((acc, job) => acc + parseInt(job.amount), 0);
+            result[x++] = { name: name, totalAmount: totalAmount};
+          });
+          return result.filter(item => item.totalAmount >= 1);
+       }
     },
     created () {
       fetch('https://demo-api.bettercommissions.com/interview-data/users')
       .then(response => response.json())
       .then(data => {
             this.owners = data.users.map(user => user.name);
-              console.log(this.owners);
+              // console.log(this.owners);
           })
           .catch(error => {
               console.error(error);
@@ -205,8 +206,8 @@
       }
 </script>
 
-<style lang="scss">  
-  tbody {
+<style lang="scss">
+tbody {
      tr:hover {
         background-color: transparent !important;
      }
@@ -214,7 +215,7 @@
 
 .list-enter-active,
 .list-leave-active {
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
 }
 .list-enter-from,
 .list-leave-to {
