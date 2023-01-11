@@ -46,55 +46,49 @@
 
                   <tbody>
                     <tr v-for="item in jobs"
-                      :key="item.name"
+                      :key="item.id"
                     >
                       <td class="pa-4">
                         <v-text-field
                         dense
-                        label="Product name"
                         outlined
                         hide-details
-                        :placeholder="item.name"
-                        :value="item.name"
+                        label="Product name"
+                        v-model="item.name"
                         color="grey darken-1"
+                        type="text"
                         ></v-text-field>
+
                       </td>
 
                       <td class="pa-4"><v-text-field
+                        type="number"
                         dense
                         label="Dollar amount"
                         outlined
                         hide-details
-                        :placeholder="item.amount"
-                        :value="item.amount"
+                        v-model="item.amount"
                         color="grey darken-1"
                         ></v-text-field></td>
                       
                       <td class="pa-4">
-                        <!-- <v-text-field
-                        dense
-                        label="Select job owner"
-                        outlined
-                       
-                        :placeholder="item.owner"
-                        :value="item.owner"
-                        color="grey darken-1"
-                        ></v-text-field> -->
-
                         <v-select
                           dense
                           hide-details
                           :items="items"
+                          v-model="item.owner"
                           outlined
                           color="grey darken-1"
                           label="Select job owner"
                         ></v-select>
-
-
                       </td>
 
 
-                      <td>Delete</td>
+                      <td><v-icon color="black" @click="deleteRow(item)"> 
+                         mdi-delete 
+                        </v-icon>
+                      </td>
+
                     </tr>
                   </tbody>
                 </template>
@@ -103,7 +97,7 @@
           </v-card>
          
           <div class="d-flex justify-space-between ">
-            <v-btn text class="blue--text">
+            <v-btn text class="blue--text" @click="addRow">
               + ADD ROW
             </v-btn>
             
@@ -134,7 +128,6 @@
 
 <script>
   /* eslint-disable */
-
   export default {
     name: 'Home',
     components: {
@@ -160,30 +153,30 @@
           },
          
         ],
-        jobs: [
-          {
-            name: 'Eclair',
-            amount: 262,
-            owner: 'Unknown',
-          },
-          {
-            name: 'Cupcake',
-            amount: 305,
-            owner: 'Unknown',
-          },
-          {
-            name: 'Gingerbread',
-            amount: 356,
-            owner: 'Unknown',
-          },
-          {
-            name: 'Jelly bean',
-            amount: 375,
-            owner: 'Unknown',
-          },
+        jobs: [{
+          id: 1,
+          name: 'sample',
+          amount: null,
+          owner: '',
+        }
         ],
       }
     },
+    methods: {
+      deleteRow(item){
+          let index = this.jobs.indexOf(item);
+          this.jobs.splice(index,1)
+      },
+      addRow(){
+        let newJob = {
+          id:this.jobs.length+1,
+          name: '',
+          amount: null,
+          owner:''
+        } 
+        this.jobs.push(newJob);
+      }
+    }
   }
 </script>
 
