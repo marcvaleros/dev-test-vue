@@ -44,53 +44,49 @@
                     </tr>
                   </thead>
 
-                  <tbody>
+                  <tbody name="list" is="transition-group">
                     <tr v-for="item in jobs"
                       :key="item.id"
-                    >
-                      <td class="pa-4">
-                        <v-text-field
-                        dense
-                        outlined
-                        hide-details
-                        label="Product name"
-                        v-model="item.name"
-                        color="grey darken-1"
-                        type="text"
-                        ></v-text-field>
-
-                      </td>
-
-                      <td class="pa-4"><v-text-field
-                        type="number"
-                        dense
-                        label="Dollar amount"
-                        outlined
-                        hide-details
-                        v-model="item.amount"
-                        color="grey darken-1"
-                        ></v-text-field></td>
+                      >
                       
-                      <td class="pa-4">
-                        <v-select
+                        <td class="pa-4">
+                          <v-text-field
                           dense
-                          hide-details
-                          :items="items"
-                          v-model="item.owner"
                           outlined
+                          hide-details
+                          label="Product name"
+                          v-model="item.name"
                           color="grey darken-1"
-                          label="Select job owner"
-                        ></v-select>
-                      </td>
-
-
-                      <td><v-icon color="black" @click="deleteRow(item)"> 
-                         mdi-delete 
-                        </v-icon>
-                      </td>
-
-                    </tr>
-                  </tbody>
+                          type="text"
+                          ></v-text-field>
+                        </td>
+                        <td class="pa-4"><v-text-field
+                          type="number"
+                          dense
+                          label="Dollar amount"
+                          outlined
+                          hide-details
+                          v-model="item.amount"
+                          color="grey darken-1"
+                          ></v-text-field></td>
+                      
+                        <td class="pa-4">
+                          <v-select
+                            dense
+                            hide-details
+                            :items="owners"
+                            v-model="item.owner"
+                            outlined
+                            color="grey darken-1"
+                            label="Select job owner"
+                          ></v-select>
+                        </td>
+                        <td><v-icon color="black" @click="deleteRow(item)">
+                           mdi-delete
+                          </v-icon>
+                        </td>
+                      </tr>
+                    </tbody>
                 </template>
               </v-simple-table>
 
@@ -115,7 +111,32 @@
           <v-card
             class="mb-12 elevation-0 grey lighten-2"
             height="200px"
-          ></v-card>
+          >
+          <v-simple-table class="grey lighten-2">
+                <template v-slot:default>
+                  <thead>
+                    <tr>
+                      <th class="text-left">
+                        $ Sum
+                      </th>
+                      <th class="text-left">
+                        Job Owner
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr v-for="item in owners"
+                      :key="item"
+                    >
+                      <td>{{ item }}</td>
+                      <td>{{ item.owner }}</td>
+                    </tr>
+
+                  </tbody>
+                </template>
+              </v-simple-table>
+        </v-card>
 
           <v-btn text class="blue--text" @click="e1 = 1">
             &lt; BACK
@@ -135,31 +156,19 @@
     data() {
       return {
         e1:1,
-        items: [
+        summary:[
           {
-            text: 'Alice0',
-          },
-          {
-            text: 'Alice1',
-          },
-          {
-            text: 'Alice2',
-          },
-          {
-            text: 'Alice3',
-          },
-          {
-            text: 'Alice4',
-          },
-         
+            owner:'',
+            total:0
+          }
         ],
+        owners: [],
         jobs: [{
           id: 1,
-          name: 'sample',
+          name: '',
           amount: null,
           owner: '',
-        }
-        ],
+        }],
       }
     },
     methods: {
@@ -176,8 +185,24 @@
         } 
         this.jobs.push(newJob);
       }
-    }
-  }
+    },
+    computed:{
+        getTotal(user) {
+          return this.jobs.map
+      }
+    },
+    created () {
+      fetch('https://demo-api.bettercommissions.com/interview-data/users')
+      .then(response => response.json())
+      .then(data => {
+            this.owners = data.users.map(user => user.name);
+              console.log(this.owners);
+          })
+          .catch(error => {
+              console.error(error);
+          });
+        },  
+      }
 </script>
 
 <style lang="scss">  
@@ -187,5 +212,13 @@
      }
   };
 
-
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
 </style>
